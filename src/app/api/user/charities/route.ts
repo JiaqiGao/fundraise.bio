@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = (await getServerSession(authOptions)) as any
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { charityId, action } = await req.json()
@@ -13,13 +13,13 @@ export async function POST(req: NextRequest) {
     const profileCharity = await prisma.profileCharity.upsert({
       where: {
         userId_charityId: {
-          userId: session.user.id,
+          userId: session.user['id'],
           charityId: charityId
         }
       },
       update: {},
       create: {
-        userId: session.user.id,
+        userId: session.user['id'],
         charityId: charityId
       }
     })
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     await prisma.profileCharity.delete({
       where: {
         userId_charityId: {
-          userId: session.user.id,
+          userId: session.user['id'],
           charityId: charityId
         }
       }

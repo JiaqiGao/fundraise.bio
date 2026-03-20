@@ -4,11 +4,11 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 export async function GET() {
-  const session = await getServerSession(authOptions)
+  const session = (await getServerSession(authOptions)) as any
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: session.user['id'] },
     include: {
       profileCharities: {
         include: { charity: true }
@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = (await getServerSession(authOptions)) as any
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { username } = await req.json()
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: session.user['id'] },
       data: { username: username.toLowerCase() }
     })
     return NextResponse.json(updatedUser)
