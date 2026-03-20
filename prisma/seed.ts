@@ -1,5 +1,13 @@
 const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const { PrismaPg } = require('@prisma/adapter-pg')
+const { Pool } = require('pg')
+require('dotenv').config()
+
+const connectionString = process.env.DATABASE_URL
+const pool = new Pool({ connectionString })
+// Cast to any to avoid the version mismatch in types on Vercel
+const adapter = new PrismaPg(pool)
+const prisma = new PrismaClient({ adapter })
 
 async function main() {
   const charities = [
@@ -60,5 +68,6 @@ main()
     process.exit(1)
   })
   .finally(async () => {
+    await pool.end()
     await prisma.$disconnect()
   })
