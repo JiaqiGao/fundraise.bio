@@ -46,20 +46,97 @@ async function main() {
       charityWatchRating: 'A-',
       donationUrl: 'https://www.givedirectly.org/donate/',
     },
+    {
+      name: 'Doctors Without Borders',
+      description: 'Provides medical care where it is needed most — in over 70 countries.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://donate.doctorswithoutborders.org/',
+    },
+    {
+      name: 'Direct Relief',
+      description: 'Improves the health and lives of people affected by poverty or emergencies.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A+',
+      donationUrl: 'https://www.directrelief.org/donate/',
+    },
+    {
+      name: 'International Rescue Committee',
+      description: 'Responds to the world\'s worst humanitarian crises.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://help.rescue.org/donate',
+    },
+    {
+      name: 'Partners In Health',
+      description: 'Brings modern medical science to those most in need.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://secure.pih.org/page/contribute/donate',
+    },
+    {
+      name: 'Feeding America',
+      description: 'The nation\'s largest domestic hunger-relief organization.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://www.feedingamerica.org/',
+    },
+    {
+      name: 'Habitat for Humanity',
+      description: 'Helps people in your community and around the world build or improve a place they can call home.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://www.habitat.org/',
+    },
+    {
+      name: 'The Nature Conservancy',
+      description: 'Conserving the lands and waters on which all life depends.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://preserve.nature.org/page/80429/donate/1',
+    },
+    {
+      name: 'ACLU',
+      description: 'Defends the individual rights and liberties guaranteed by the Constitution.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://action.aclu.org/give/now',
+    },
+    {
+      name: 'Room to Read',
+      description: 'Focuses on literacy and gender equality in education.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://www.roomtoread.org/donate/',
+    },
+    {
+      name: 'The Hunger Project',
+      description: 'Empowers people to end their own hunger and poverty on a sustainable basis.',
+      giveWellRating: 'N/A',
+      charityWatchRating: 'A',
+      donationUrl: 'https://thp.org/invest-now/',
+    }
   ]
 
   for (const charity of charities) {
-    await prisma.charity.upsert({
-      where: { id: '' }, // This won't match anything, so it will always create
-      update: {},
-      create: charity,
-    }).catch(async (e: any) => {
-      // If no unique constraint on name, just create
-      await prisma.charity.create({ data: charity })
+    // Using name as a simple unique identifier for seeding
+    const existing = await prisma.charity.findFirst({
+      where: { name: charity.name }
     })
+
+    if (existing) {
+      await prisma.charity.update({
+        where: { id: existing.id },
+        data: charity
+      })
+    } else {
+      await prisma.charity.create({
+        data: charity
+      })
+    }
   }
 
-  console.log('Seed completed successfully.')
+  console.log('Seed completed successfully with more charities.')
 }
 
 main()

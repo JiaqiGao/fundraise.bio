@@ -109,6 +109,8 @@ export default function CharityCard({ profileCharity }: { profileCharity: Profil
                 type="number"
                 placeholder="Amount ($)"
                 value={amount}
+                min="1"
+                max="10000"
                 onChange={(e) => setAmount(e.target.value)}
                 required
               />
@@ -116,6 +118,7 @@ export default function CharityCard({ profileCharity }: { profileCharity: Profil
                 type="text"
                 placeholder="Your Name (optional)"
                 value={donorName}
+                maxLength={150}
                 onChange={(e) => setDonorName(e.target.value)}
               />
             </div>

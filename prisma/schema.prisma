@@ -38,19 +38,19 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
+  name          String?   @db.VarChar(150)
+  email         String?   @unique @db.VarChar(150)
   emailVerified DateTime?
   image         String?
-  username      String?   @unique
+  username      String?   @unique @db.VarChar(150)
   accounts      Account[]
   sessions      Session[]
   profileCharities ProfileCharity[]
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
+  identifier String   @db.VarChar(150)
+  token      String   @unique @db.VarChar(150)
   expires    DateTime
 
   @@unique([identifier, token])
@@ -58,7 +58,7 @@ model VerificationToken {
 
 model Charity {
   id                  String           @id @default(cuid())
-  name                String
+  name                String           @db.VarChar(150)
   description         String
   giveWellRating      String?
   charityWatchRating  String?
@@ -83,7 +83,7 @@ model DonationReport {
   id               String         @id @default(cuid())
   profileCharityId String
   amount           Float
-  donorName        String?
+  donorName        String?        @db.VarChar(150)
   createdAt        DateTime       @default(now())
   profileCharity   ProfileCharity @relation(fields: [profileCharityId], references: [id], onDelete: Cascade)
 }

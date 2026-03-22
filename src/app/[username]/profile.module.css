@@ -1,12 +1,13 @@
 .container {
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 1rem; /* Add padding for smaller screens */
 }
 
 .header {
   text-align: center;
   margin-bottom: 4rem;
-  padding: 4rem 1rem;
+  padding: 4rem 0; /* Adjust padding for smaller screens */
 }
 
 .avatar {
@@ -31,6 +32,32 @@
   color: #64748b;
   max-width: 600px;
   margin: 0 auto;
+}
+
+.charityGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 2rem 0; /* Further adjust padding for very small screens */
+  }
+  .header h1 {
+    font-size: 2.2rem;
+  }
+  .header p {
+    font-size: 1rem;
+  }
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .avatar svg {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .charityGrid {

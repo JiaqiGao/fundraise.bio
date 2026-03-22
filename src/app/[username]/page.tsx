@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import styles from './profile.module.css'
 import CharityCard from '@/components/CharityCard'
 import { Heart } from 'lucide-react'
+import ProfileNav from '@/components/ProfileNav'
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params
@@ -31,20 +32,23 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
   }
 
   return (
-    <main className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.avatar}>
-          <Heart size={40} color="white" />
-        </div>
-        <h1>{user.username}</h1>
-        <p>I'm supporting these effective charities. Join me in making a difference.</p>
-      </header>
+    <>
+      <ProfileNav />
+      <main className={styles.container}>
+        <header className={styles.header}>
+          <div className={styles.avatar}>
+            <Heart size={40} color="white" />
+          </div>
+          <h1>{user.username}</h1>
+          <p>I'm supporting these effective charities. Join me in making a difference.</p>
+        </header>
 
-      <div className={styles.charityGrid}>
-        {user.profileCharities.map((pc) => (
-          <CharityCard key={pc.id} profileCharity={pc} />
-        ))}
-      </div>
-    </main>
+        <div className={styles.charityGrid}>
+          {user.profileCharities.map((pc) => (
+            <CharityCard key={pc.id} profileCharity={pc} />
+          ))}
+        </div>
+      </main>
+    </>
   )
 }

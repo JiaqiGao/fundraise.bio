@@ -33,7 +33,7 @@ export default async function ExplorePage() {
                 <div className={styles.avatar}>
                   <Heart size={20} color="white" />
                 </div>
-                <h3>/{profile.username}</h3>
+                <h3>{profile.username}</h3>
               </div>
               <p>Supporting {profile._count.profileCharities} charities</p>
             </Link>

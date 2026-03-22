@@ -35,6 +35,7 @@ export default function Dashboard() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [availableCharities, setAvailableCharities] = useState<Charity[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')

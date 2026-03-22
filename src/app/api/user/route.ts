@@ -26,8 +26,14 @@ export async function POST(req: NextRequest) {
   const { username } = await req.json()
   
   // Basic validation
-  if (!username || username.length < 3) {
-    return NextResponse.json({ error: 'Username too short' }, { status: 400 })
+  if (!username || username.length < 3 || username.length > 150) {
+    return NextResponse.json({ error: 'Username must be between 3 and 150 chars' }, { status: 400 })
+  }
+
+  // Sanitize username
+  const cleanUsername = username.toLowerCase().replace(/[^a-z0-9_]/g, '')
+  if (cleanUsername !== username.toLowerCase()) {
+    return NextResponse.json({ error: 'Username can only contain alphanumeric characters and underscores' }, { status: 400 })
   }
 
   try {
